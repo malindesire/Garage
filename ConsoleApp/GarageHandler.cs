@@ -1,4 +1,6 @@
 ﻿using ConsoleApp.Vehicles;
+using System.Drawing;
+using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
@@ -72,51 +74,29 @@ namespace ConsoleApp
                 _ui.ShowMessage($"{kvp.Key}: {kvp.Value} parked");
             }
         }
-        public void ParkVehicle()
+        public bool Park(string regNumber, string color, string vehicleType, int propertyValue )
         {
             // Implementation for parking a vehicle
-            if (CheckFullGarage()) return;
 
-            var regNumber = _ui.AskForString("Enter vehicle registration number");
-            var color = _ui.AskForString("Enter vehicle color");
-            var vehicleType = _ui.AskForString("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
-            Vehicle vehicle;
-
-            if (vehicleType == "airplane")
+            Vehicle vehicle = (vehicleType) switch             
             {
-                int wingspan = _ui.AskForInt("Enter airplane wingspan");
-                vehicle = new Airplane(regNumber, color, wingspan);
-            } else if (vehicleType == "boat")
-            {
-                int length = _ui.AskForInt("Enter boat length");
-                vehicle = new Boat(regNumber, color, length);
-            } else if (vehicleType == "bus")
-            {
-                int capacity = _ui.AskForInt("Enter bus capacity");
-                vehicle = new Bus(regNumber, color, capacity);
-            } else if (vehicleType == "car")
-            {
-                int doors = _ui.AskForInt("Enter number of doors");
-                vehicle = new Car(regNumber, color, doors);
-            } else if (vehicleType == "motorcycle")
-            {
-                int cylinderVolume = _ui.AskForInt("Enter cylinder volume");
-                vehicle = new Motorcycle(regNumber, color, cylinderVolume);
-            } else
-            {
-                _ui.ShowMessage("Invalid vehicle type entered.");
-                return; // Exit if the vehicle type is invalid
-            }
-            ;
+                "airplane" => new Airplane(regNumber, color, propertyValue),
+                "boat" => new Boat(regNumber, color, propertyValue),
+                "bus" => new Bus(regNumber, color, propertyValue),
+                "car" => new Car(regNumber, color, propertyValue),
+                "motorcycle" => new Motorcycle(regNumber, color, propertyValue),
+                _ => throw new ArgumentException("Invalid vehicle type.")
+            };
 
             for (int i = 0; i < _garage.Capacity; i++)
             {
                 if (_garage.Spots[i].Park(vehicle))
                 {
-                    _ui.ShowMessage($"Vehicle parked in spot {i + 1}.");
-                    break;
+                    return true; // Vehicle parked successfully
                 }
             }
+
+            return false;
         }
         public Vehicle? Remove(string regNumber)
         {

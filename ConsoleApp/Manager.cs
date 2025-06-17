@@ -3,6 +3,7 @@
 
 
 
+
 namespace ConsoleApp
 {
     internal class Manager
@@ -35,7 +36,7 @@ namespace ConsoleApp
                         _garageHandler.ShowVehicleTypesAndCounts();
                         break;
                     case "3":
-                        _garageHandler.ParkVehicle();
+                        ParkVehicle();
                         break;
                     case "4":
                         RemoveVehicle();
@@ -53,6 +54,46 @@ namespace ConsoleApp
                         _ui.ShowMessage("Invalid option, please try again.");
                         break;
                 }
+            }
+        }
+
+        private void ParkVehicle()
+        {
+            var regNumber = _ui.AskForString("Enter vehicle registration number");
+            var color = _ui.AskForString("Enter vehicle color");
+            var vehicleType = _ui.AskForString("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
+            int propertyValue = 0;
+
+            switch (vehicleType)             
+            {
+                case "airplane":
+                    propertyValue = _ui.AskForInt("Enter airplane wingspan");
+                    break;
+                case "boat":
+                    propertyValue = _ui.AskForInt("Enter boat length");
+                    break;
+                case "bus":
+                    propertyValue = _ui.AskForInt("Enter number of seats");
+                    break;
+                case "car":
+                    propertyValue = _ui.AskForInt("Enter number of doors");
+                    break;
+                case "motorcycle":
+                    propertyValue = _ui.AskForInt("Enter cylinder volume");
+                    break;
+                default:
+                    _ui.ShowMessage("Invalid vehicle type entered.");
+                    return; // Exit if the vehicle type is invalid
+            }
+
+            bool parked = _garageHandler.Park(regNumber, color, vehicleType, propertyValue);
+            if (parked)
+            {
+                _ui.ShowMessage($"Vehicle of type {vehicleType} with registration number {regNumber} parked successfully.");
+            }
+            else
+            {
+                _ui.ShowMessage("Garage is full, could not park the vehicle.");
             }
         }
 
