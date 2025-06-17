@@ -16,7 +16,7 @@
             Console.WriteLine("0. Exit");
         }
 
-        public string AskForInput(string prompt)
+        public string AskForString(string prompt)
         {
             Console.WriteLine($"{prompt}:");
             return Console.ReadLine() ?? string.Empty;
