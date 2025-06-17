@@ -77,9 +77,9 @@ namespace ConsoleApp
             // Implementation for parking a vehicle
             if (CheckFullGarage()) return;
 
-            var regNumber = _ui.AskForInput("Enter vehicle registration number");
-            var color = _ui.AskForInput("Enter vehicle color");
-            var vehicleType = _ui.AskForInput("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
+            var regNumber = _ui.AskForString("Enter vehicle registration number");
+            var color = _ui.AskForString("Enter vehicle color");
+            var vehicleType = _ui.AskForString("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
             Vehicle vehicle;
 
             if (vehicleType == "airplane")
@@ -123,7 +123,7 @@ namespace ConsoleApp
             // Implementation for removing a vehicle
             if (CheckEmptyGarage()) return;
 
-            var regNumber = _ui.AskForInput("Enter vehicle registration number to remove");
+            var regNumber = _ui.AskForString("Enter vehicle registration number to remove");
             bool found = false;
             foreach (var spot in _garage.Spots)
             {
@@ -169,7 +169,7 @@ namespace ConsoleApp
             // Implementation for searching a vehicle by registration number
             if (CheckEmptyGarage()) return;
 
-            var regNumber = _ui.AskForInput("Enter vehicle registration number to search for");
+            var regNumber = _ui.AskForString("Enter vehicle registration number to search for");
             bool found = false;
 
             foreach (var spot in _garage.Spots)
@@ -188,9 +188,19 @@ namespace ConsoleApp
                 _ui.ShowMessage($"No vehicle found with registration number {regNumber}.");
             }
         }
-        public void SearchVehicleByProperty()
+        public IEnumerable<Vehicle?> SearchVehicles(string color = null, int? wheels = null, string vehicleType = null)
         {
             // Implementation for searching a vehicle by property
+
+            return _garage
+                    .Where(spot => spot.IsOccupied) // Bara upptagna platser
+                    .Select(spot => spot.ParkedVehicle)
+                    .Where(ParkedVehicle =>
+                        (string.IsNullOrEmpty(color) || ParkedVehicle != null && ParkedVehicle.Color.Equals(color, StringComparison.OrdinalIgnoreCase)) &&
+                        (!wheels.HasValue || ParkedVehicle != null && ParkedVehicle.Wheels == wheels.Value) &&
+                        (string.IsNullOrEmpty(vehicleType) || ParkedVehicle != null && ParkedVehicle.GetType().Name.Equals(vehicleType, StringComparison.OrdinalIgnoreCase))
+                    );
+
         }
     }
 }

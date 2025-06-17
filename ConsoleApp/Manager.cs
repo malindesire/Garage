@@ -1,10 +1,11 @@
 ﻿
+
 namespace ConsoleApp
 {
     internal class Manager
     {
         private readonly UI _ui;
-        private readonly GarageHandler GarageHandler = new GarageHandler(15); // Assuming a garage with 15 spots
+        private readonly GarageHandler _garageHandler = new GarageHandler(15); // Assuming a garage with 15 spots
 
         public Manager()
         {
@@ -17,7 +18,7 @@ namespace ConsoleApp
 
             while (true)
             {
-                var input = _ui.AskForInput("Select an option");
+                var input = _ui.AskForString("Select an option");
                 if (input == "0")
                 {
                     break;
@@ -25,29 +26,52 @@ namespace ConsoleApp
                 switch (input)
                 {
                     case "1":
-                        GarageHandler.ShowAllParkedVehicles();
+                        _garageHandler.ShowAllParkedVehicles();
                         break;
                     case "2":
-                        GarageHandler.ShowVehicleTypesAndCounts();
+                        _garageHandler.ShowVehicleTypesAndCounts();
                         break;
                     case "3":
-                        GarageHandler.ParkVehicle();
+                        _garageHandler.ParkVehicle();
                         break;
                     case "4":
-                        GarageHandler.RemoveVehicle();
+                        _garageHandler.RemoveVehicle();
                         break;
                     case "5":
-                        GarageHandler.PopulateGarageWithVehicles(10);
+                        _garageHandler.PopulateGarageWithVehicles(10);
                         break;
                     case "6":
-                        GarageHandler.SearchVehicleByRegistrationNumber();
+                        _garageHandler.SearchVehicleByRegistrationNumber();
                         break;
                     case "7":
-                        GarageHandler.SearchVehicleByProperty();
+                        SearchVehicleByProperty();
                         break;
                     default:
                         _ui.ShowMessage("Invalid option, please try again.");
                         break;
+                }
+            }
+        }
+
+        private void SearchVehicleByProperty()
+        {
+            _ui.ShowMessage("Search for vehicles by property, press enter if you want to skip a property.");
+            string color = _ui.AskForString("Color");
+            int wheels = _ui.AskForInt("Wheel Quantity");
+            string type = _ui.AskForString("Type of Vehicle");
+
+            var results = _garageHandler.SearchVehicles(color, wheels, type);
+
+            if (!results.Any())
+            {
+                _ui.ShowMessage("No vehicles matched the criteria.");
+            }
+            else
+            {
+                _ui.ShowMessage($"Found {results.Count()} vehicles matching the criteria:");
+                foreach (var v in results)
+                {
+                    _ui.ShowMessage($"{v.GetType().Name} with registration number {v.RegNumber}.");
                 }
             }
         }
