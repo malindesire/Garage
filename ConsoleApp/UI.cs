@@ -22,6 +22,27 @@
             return Console.ReadLine() ?? string.Empty;
         }
 
+        public int AskForInt(string prompt)
+        {
+            int result;
+            bool success = false;
+
+            do
+            {
+                Console.WriteLine($"{prompt}:");
+                string input = Console.ReadLine() ?? string.Empty;
+                success = int.TryParse(input, out result);
+
+                if (!success)
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                }
+
+            } while (!success);
+
+            return result;
+        }
+
         public void ShowMessage(string message)
         {
             Console.WriteLine(message);
