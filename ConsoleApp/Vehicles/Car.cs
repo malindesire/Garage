@@ -3,8 +3,8 @@
     internal class Car : Vehicle
     {
         public int Doors { get; }
-        public Car(string regNumber, string color, int wheels, int doors)
-            : base(regNumber, color, wheels)
+        public Car(string regNumber, string color, int doors)
+            : base(regNumber, color, wheels: 4)
         {
             Doors = doors;
         }
