@@ -1,5 +1,6 @@
 ﻿
 
+
 namespace ConsoleApp
 {
     internal class Manager
@@ -41,7 +42,7 @@ namespace ConsoleApp
                         _garageHandler.PopulateGarageWithVehicles(10);
                         break;
                     case "6":
-                        _garageHandler.SearchVehicleByRegistrationNumber();
+                        SearchVehicleByRegistrationNumber();
                         break;
                     case "7":
                         SearchVehicleByProperty();
@@ -50,6 +51,21 @@ namespace ConsoleApp
                         _ui.ShowMessage("Invalid option, please try again.");
                         break;
                 }
+            }
+        }
+
+        private void SearchVehicleByRegistrationNumber()
+        {
+            _ui.ShowMessage("Search for a vehicle by registration number.");
+            string regNumber = _ui.AskForString("Registration Number");
+            var vehicle = _garageHandler.SearchVehicles(regNumber);
+            if (vehicle == null)
+            {
+                _ui.ShowMessage("No vehicle found with that registration number.");
+            }
+            else
+            {
+                _ui.ShowMessage($"Found vehicle: {vehicle.GetType().Name} with registration number {vehicle.RegNumber}.");
             }
         }
 

@@ -164,41 +164,27 @@ namespace ConsoleApp
 
             _ui.ShowMessage($"Garage populated with {count} vehicles.");
         }
-        public void SearchVehicleByRegistrationNumber()
+        public Vehicle? SearchVehicles(string regNumber)
         {
             // Implementation for searching a vehicle by registration number
-            if (CheckEmptyGarage()) return;
 
-            var regNumber = _ui.AskForString("Enter vehicle registration number to search for");
-            bool found = false;
-
-            foreach (var spot in _garage.Spots)
-            {
-                if (spot.ParkedVehicle != null && spot.ParkedVehicle.RegNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
-                {
-                    Vehicle vehicle = spot.ParkedVehicle;
-                    _ui.ShowMessage($"Found {vehicle.GetType().Name} with registration number {vehicle.RegNumber} in spot {spot.Number}.");
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                _ui.ShowMessage($"No vehicle found with registration number {regNumber}.");
-            }
+            return _garage
+                    .Where(spot => spot.IsOccupied) // Bara upptagna platser
+                    .Select(spot => spot.ParkedVehicle)
+                    .Where(vehicle => vehicle != null && vehicle.RegNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
+                    .FirstOrDefault();
         }
-        public IEnumerable<Vehicle?> SearchVehicles(string color = null, int? wheels = null, string vehicleType = null)
+        public IEnumerable<Vehicle?> SearchVehicles(string color, int? wheels, string vehicleType)
         {
             // Implementation for searching a vehicle by property
 
             return _garage
                     .Where(spot => spot.IsOccupied) // Bara upptagna platser
                     .Select(spot => spot.ParkedVehicle)
-                    .Where(ParkedVehicle =>
-                        (string.IsNullOrEmpty(color) || ParkedVehicle != null && ParkedVehicle.Color.Equals(color, StringComparison.OrdinalIgnoreCase)) &&
-                        (!wheels.HasValue || ParkedVehicle != null && ParkedVehicle.Wheels == wheels.Value) &&
-                        (string.IsNullOrEmpty(vehicleType) || ParkedVehicle != null && ParkedVehicle.GetType().Name.Equals(vehicleType, StringComparison.OrdinalIgnoreCase))
+                    .Where(vehicle =>
+                        (string.IsNullOrEmpty(color) || vehicle != null && vehicle.Color.Equals(color, StringComparison.OrdinalIgnoreCase)) &&
+                        (!wheels.HasValue || vehicle != null && vehicle.Wheels == wheels.Value) &&
+                        (string.IsNullOrEmpty(vehicleType) || vehicle != null && vehicle.GetType().Name.Equals(vehicleType, StringComparison.OrdinalIgnoreCase))
                     );
 
         }
