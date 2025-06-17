@@ -1,6 +1,4 @@
 ﻿using ConsoleApp.Vehicles;
-using System.Drawing;
-using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
@@ -34,23 +32,17 @@ namespace ConsoleApp
 
             return false; // Garage is not empty
         }
-        public void ShowAllParkedVehicles()
+        public IEnumerable<Vehicle?> GetParkedVehicles()
         {
             // Implementation for showing all parked vehicles
-            if (CheckEmptyGarage()) return;
 
-            foreach (var spot in _garage.Spots)
-            {
-                if (spot.ParkedVehicle != null)
-                {
-                    _ui.ShowMessage($"Spot {spot.Number}: {spot.ParkedVehicle.GetType().Name} - {spot.ParkedVehicle.RegNumber}");
-                }
-            }
+            return _garage
+                    .Where(spot => spot.IsOccupied) // Only occupied spots
+                    .Select(spot => spot.ParkedVehicle); // Get the parked vehicles
         }
-        public void ShowVehicleTypesAndCounts()
+        public Dictionary<string, int> GetVehicleTypeCount()
         {
             // Implementation for showing vehicle types and counts
-            if (CheckEmptyGarage()) return;
 
             var vehicleCounts = new Dictionary<string, int>(); 
             foreach (var spot in _garage.Spots)
@@ -69,10 +61,7 @@ namespace ConsoleApp
                 }
             }
 
-            foreach (var kvp in vehicleCounts)
-            {
-                _ui.ShowMessage($"{kvp.Key}: {kvp.Value} parked");
-            }
+            return vehicleCounts; // Return a dictionary with vehicle types and their counts
         }
         public bool Park(string regNumber, string color, string vehicleType, int propertyValue )
         {
@@ -139,7 +128,7 @@ namespace ConsoleApp
             // Implementation for searching a vehicle by registration number
 
             return _garage
-                    .Where(spot => spot.IsOccupied) // Bara upptagna platser
+                    .Where(spot => spot.IsOccupied) // Only occupied spots
                     .Select(spot => spot.ParkedVehicle)
                     .Where(vehicle => vehicle != null && vehicle.RegNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
                     .FirstOrDefault();
@@ -149,7 +138,7 @@ namespace ConsoleApp
             // Implementation for searching a vehicle by property
 
             return _garage
-                    .Where(spot => spot.IsOccupied) // Bara upptagna platser
+                    .Where(spot => spot.IsOccupied) // Only occupied spots
                     .Select(spot => spot.ParkedVehicle)
                     .Where(vehicle =>
                         (string.IsNullOrEmpty(color) || vehicle != null && vehicle.Color.Equals(color, StringComparison.OrdinalIgnoreCase)) &&

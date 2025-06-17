@@ -1,10 +1,4 @@
-﻿
-
-
-
-
-
-namespace ConsoleApp
+﻿namespace ConsoleApp
 {
     internal class Manager
     {
@@ -22,7 +16,7 @@ namespace ConsoleApp
 
             while (true)
             {
-                var input = _ui.AskForString("Select an option");
+                var input = _ui.AskForString("Select an option from the menu");
                 if (input == "0")
                 {
                     break;
@@ -30,10 +24,10 @@ namespace ConsoleApp
                 switch (input)
                 {
                     case "1":
-                        _garageHandler.ShowAllParkedVehicles();
+                        ShowAllParkedVehicles();
                         break;
                     case "2":
-                        _garageHandler.ShowVehicleTypesAndCounts();
+                        ShowVehicleTypesAndCounts();
                         break;
                     case "3":
                         ParkVehicle();
@@ -54,6 +48,30 @@ namespace ConsoleApp
                         _ui.ShowMessage("Invalid option, please try again.");
                         break;
                 }
+            }
+        }
+
+        private void ShowAllParkedVehicles()
+        {
+            _ui.ShowMessage("Vehicles parked in the garage:");
+
+            var vehicles = _garageHandler.GetParkedVehicles();
+            foreach (var vehicle in vehicles)
+            {
+                if (vehicle != null)
+                {
+                    _ui.ShowMessage($"{vehicle.GetType().Name} in {vehicle.Color} with registration number {vehicle.RegNumber}");
+                }
+            }
+        }
+
+        private void ShowVehicleTypesAndCounts()
+        {
+            var vehicleCounts = _garageHandler.GetVehicleTypeCount();
+
+            foreach (var kvp in vehicleCounts)
+            {
+                _ui.ShowMessage($"{kvp.Key}: {kvp.Value} parked");
             }
         }
 
