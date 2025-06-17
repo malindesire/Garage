@@ -167,6 +167,26 @@ namespace ConsoleApp
         public void SearchVehicleByRegistrationNumber()
         {
             // Implementation for searching a vehicle by registration number
+            if (CheckEmptyGarage()) return;
+
+            var regNumber = _ui.AskForInput("Enter vehicle registration number to search for");
+            bool found = false;
+
+            foreach (var spot in _garage.Spots)
+            {
+                if (spot.ParkedVehicle != null && spot.ParkedVehicle.RegNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    Vehicle vehicle = spot.ParkedVehicle;
+                    _ui.ShowMessage($"Found {vehicle.GetType().Name} with registration number {vehicle.RegNumber} in spot {spot.Number}.");
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                _ui.ShowMessage($"No vehicle found with registration number {regNumber}.");
+            }
         }
         public void SearchVehicleByProperty()
         {
