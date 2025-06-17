@@ -9,7 +9,7 @@
 
         public Vehicle(string regNumber, string color, int wheels)
         {
-            RegNumber = regNumber;
+            RegNumber = regNumber.ToUpper();
             Color = color;
             Wheels = wheels;
         }

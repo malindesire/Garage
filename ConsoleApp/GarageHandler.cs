@@ -121,6 +121,26 @@ namespace ConsoleApp
         public void RemoveVehicle()
         {
             // Implementation for removing a vehicle
+            if (CheckEmptyGarage()) return;
+
+            var regNumber = _ui.AskForInput("Enter vehicle registration number to remove");
+            bool found = false;
+            foreach (var spot in _garage.Spots)
+            {
+                if (spot.ParkedVehicle != null && spot.ParkedVehicle.RegNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    Vehicle vehicle = spot.ParkedVehicle;
+                    spot.Vacate();
+                    _ui.ShowMessage($"{vehicle.GetType().Name} with registration number {vehicle.RegNumber} has been removed from spot {spot.Number}.");
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                _ui.ShowMessage($"No vehicle found with registration number {regNumber}.");
+            }
         }
         public void PopulateGarageWithVehicles(int count)
         {
