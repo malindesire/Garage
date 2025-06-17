@@ -11,8 +11,32 @@ namespace ConsoleApp
             _garage = new Garage<Spot>(capacity, i => new Spot(i));
             _ui = new UI();
         }
+
+        public bool CheckFullGarage()
+        {
+            if (_garage.IsFull)
+            {
+                _ui.ShowMessage("The garage is full.");
+                return true;
+            }
+
+            return false; // Garage is not full
+        }
+        public bool CheckEmptyGarage()
+        {
+            if (_garage.IsEmpty)
+            {
+                _ui.ShowMessage("The garage is empty.");
+                return true;
+            }
+
+            return false; // Garage is not empty
+        }
         public void ShowAllParkedVehicles()
         {
+            // Implementation for showing all parked vehicles
+            if (CheckEmptyGarage()) return;
+
             foreach (var spot in _garage.Spots)
             {
                 if (spot.ParkedVehicle != null)
@@ -24,6 +48,7 @@ namespace ConsoleApp
         public void ShowVehicleTypesAndCounts()
         {
             // Implementation for showing vehicle types and counts
+            if (CheckEmptyGarage()) return;
 
             var vehicleCounts = new Dictionary<string, int>(); 
             foreach (var spot in _garage.Spots)
@@ -50,6 +75,48 @@ namespace ConsoleApp
         public void ParkVehicle()
         {
             // Implementation for parking a vehicle
+            if (CheckFullGarage()) return;
+
+            var regNumber = _ui.AskForInput("Enter vehicle registration number");
+            var color = _ui.AskForInput("Enter vehicle color");
+            var vehicleType = _ui.AskForInput("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
+            Vehicle vehicle;
+
+            if (vehicleType == "airplane")
+            {
+                int wingspan = _ui.AskForInt("Enter airplane wingspan");
+                vehicle = new Airplane(regNumber, color, wingspan);
+            } else if (vehicleType == "boat")
+            {
+                int length = _ui.AskForInt("Enter boat length");
+                vehicle = new Boat(regNumber, color, length);
+            } else if (vehicleType == "bus")
+            {
+                int capacity = _ui.AskForInt("Enter bus capacity");
+                vehicle = new Bus(regNumber, color, capacity);
+            } else if (vehicleType == "car")
+            {
+                int doors = _ui.AskForInt("Enter number of doors");
+                vehicle = new Car(regNumber, color, doors);
+            } else if (vehicleType == "motorcycle")
+            {
+                int cylinderVolume = _ui.AskForInt("Enter cylinder volume");
+                vehicle = new Motorcycle(regNumber, color, cylinderVolume);
+            } else
+            {
+                _ui.ShowMessage("Invalid vehicle type entered.");
+                return; // Exit if the vehicle type is invalid
+            }
+            ;
+
+            for (int i = 0; i < _garage.Capacity; i++)
+            {
+                if (_garage.Spots[i].Park(vehicle))
+                {
+                    _ui.ShowMessage($"Vehicle parked in spot {i + 1}.");
+                    break;
+                }
+            }
         }
         public void RemoveVehicle()
         {
