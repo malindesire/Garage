@@ -118,31 +118,23 @@ namespace ConsoleApp
                 }
             }
         }
-        public void RemoveVehicle()
+        public Vehicle? Remove(string regNumber)
         {
             // Implementation for removing a vehicle
-            if (CheckEmptyGarage()) return;
 
-            var regNumber = _ui.AskForString("Enter vehicle registration number to remove");
-            bool found = false;
             foreach (var spot in _garage.Spots)
             {
                 if (spot.ParkedVehicle != null && spot.ParkedVehicle.RegNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
                 {
                     Vehicle vehicle = spot.ParkedVehicle;
                     spot.Vacate();
-                    _ui.ShowMessage($"{vehicle.GetType().Name} with registration number {vehicle.RegNumber} has been removed from spot {spot.Number}.");
-                    found = true;
-                    break;
+                    return vehicle;
                 }
             }
 
-            if (!found)
-            {
-                _ui.ShowMessage($"No vehicle found with registration number {regNumber}.");
-            }
+            return null; // Return null if no vehicle with the given registration number was found
         }
-        public void PopulateGarageWithVehicles(int count)
+        public void Populate(int count)
         {
             // Implementation for populating the garage with vehicles
             var airplane = new Airplane("ABC123", "white", 60);
@@ -161,8 +153,6 @@ namespace ConsoleApp
             _garage.Spots[4].Park(motorcycle);
             _garage.Spots[5].Park(motorcycle);
             _garage.Spots[6].Park(motorcycle);
-
-            _ui.ShowMessage($"Garage populated with {count} vehicles.");
         }
         public Vehicle? SearchVehicles(string regNumber)
         {

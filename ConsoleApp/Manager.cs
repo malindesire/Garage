@@ -1,6 +1,8 @@
 ﻿
 
 
+
+
 namespace ConsoleApp
 {
     internal class Manager
@@ -36,10 +38,10 @@ namespace ConsoleApp
                         _garageHandler.ParkVehicle();
                         break;
                     case "4":
-                        _garageHandler.RemoveVehicle();
+                        RemoveVehicle();
                         break;
                     case "5":
-                        _garageHandler.PopulateGarageWithVehicles(10);
+                        PopulateGarageWithVehicles(10);
                         break;
                     case "6":
                         SearchVehicleByRegistrationNumber();
@@ -52,6 +54,28 @@ namespace ConsoleApp
                         break;
                 }
             }
+        }
+
+        private void RemoveVehicle()
+        {
+            var regNumber = _ui.AskForString("Enter vehicle registration number to remove");
+            var vehicle = _garageHandler.Remove(regNumber);
+            if (vehicle == null)
+            {
+                _ui.ShowMessage("No vehicle found with that registration number.");
+            }
+            else
+            {
+                _ui.ShowMessage($"{vehicle.GetType().Name} with registration number {vehicle.RegNumber} removed from garage.");
+            }
+
+        }
+
+        private void PopulateGarageWithVehicles(int quantity)
+        {
+            _garageHandler.Populate(quantity);
+            _ui.ShowMessage($"Garage populated with {quantity} vehicles.");
+
         }
 
         private void SearchVehicleByRegistrationNumber()
