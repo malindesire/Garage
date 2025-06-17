@@ -2,22 +2,28 @@
 
 namespace ConsoleApp
 {
-    internal class Garage<T> : IEnumerable<T>
+    internal class Garage<T> : IEnumerable<T> where T : Spot
     {
-        private readonly T[] _vehicles;
+        private readonly T[] _spots;
         public int Capacity { get; }
+        public T[] Spots => _spots;
 
-        public Garage(int capacity)
+        public Garage(int capacity, Func<int, T> spotFactory)
         {
             Capacity = capacity;
-            _vehicles = new T[capacity];
+            _spots = new T[capacity];
+
+            for (int i = 0; i < capacity; i++)
+            {
+                _spots[i] = spotFactory(i + 1); // Create every Spot with a unique number starting from 1
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            foreach (var item in _vehicles)
+            foreach (var spot in _spots)
             {
-                yield return item;
+                yield return spot;
             }
         }
 
