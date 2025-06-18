@@ -103,7 +103,7 @@ namespace ConsoleApp
             _garage.Spots[5].Park(motorcycle);
             _garage.Spots[6].Park(motorcycle); */
         }
-        public Vehicle? SearchVehicles(string regNumber)
+        public Vehicle? SearchVehicle(string regNumber)
         {
             // Implementation for searching a vehicle by registration number
 
@@ -121,7 +121,7 @@ namespace ConsoleApp
                     .Where(spot => spot.IsOccupied) // Only occupied spots
                     .Select(spot => spot.ParkedVehicle)
                     .Where(vehicle =>
-                        (vehicle != null && vehicle.Color.Equals(color)) &&
+                        (!color.HasValue || vehicle != null && vehicle.Color.Equals(color)) &&
                         (!wheels.HasValue || vehicle != null && vehicle.Wheels == wheels.Value) &&
                         (string.IsNullOrEmpty(vehicleType) || vehicle != null && vehicle.GetType().Name.Equals(vehicleType, StringComparison.OrdinalIgnoreCase))
                     );

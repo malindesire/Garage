@@ -175,7 +175,7 @@ namespace ConsoleApp
 
             _ui.ShowMessage("Search for a vehicle by registration number.");
             string regNumber = _ui.AskForString("Registration Number");
-            var vehicle = _garageHandler.SearchVehicles(regNumber);
+            var vehicle = _garageHandler.SearchVehicle(regNumber);
             if (vehicle == null)
             {
                 _ui.ShowMessage("No vehicle found with that registration number.");
@@ -192,7 +192,7 @@ namespace ConsoleApp
 
             _ui.ShowMessage("Search for vehicles by property");
             VehicleColor? color = _ui.AskForOptionalVehicleColor();
-            var wheels = _ui.AskForInt("Wheel Quantity. Press Enter to skip.");
+            var wheels = _ui.AskForInt("Wheel Quantity");
             var type = _ui.AskForString("Type of Vehicle");
 
             var results = _garageHandler.SearchVehicles(color, wheels, type);
