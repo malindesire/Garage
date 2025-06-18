@@ -43,17 +43,17 @@ namespace ConsoleApp
 
             return vehicleCounts; // Return a dictionary with vehicle types and their counts
         }
-        public bool Park(string regNumber, VehicleColor color, string vehicleType, int propertyValue )
+        public bool Park(string regNumber, VehicleColor color, VehicleType vehicleType, int propertyValue )
         {
             // Implementation for parking a vehicle
 
             Vehicle vehicle = (vehicleType) switch             
             {
-                "airplane" => new Airplane(regNumber, color, propertyValue),
-                "boat" => new Boat(regNumber, color, propertyValue),
-                "bus" => new Bus(regNumber, color, propertyValue),
-                "car" => new Car(regNumber, color, propertyValue),
-                "motorcycle" => new Motorcycle(regNumber, color, propertyValue),
+                VehicleType.Airplane => new Airplane(regNumber, color, propertyValue),
+                VehicleType.Boat => new Boat(regNumber, color, propertyValue),
+                VehicleType.Bus => new Bus(regNumber, color, propertyValue),
+                VehicleType.Car => new Car(regNumber, color, propertyValue),
+                VehicleType.Motorcycle => new Motorcycle(regNumber, color, propertyValue),
                 _ => throw new ArgumentException("Invalid vehicle type.")
             };
 
@@ -113,7 +113,7 @@ namespace ConsoleApp
                     .Where(vehicle => vehicle != null && vehicle.RegNumber.Equals(regNumber, StringComparison.OrdinalIgnoreCase))
                     .FirstOrDefault();
         }
-        public IEnumerable<Vehicle?> SearchVehicles(VehicleColor? color, int? wheels, string vehicleType)
+        public IEnumerable<Vehicle?> SearchVehicles(VehicleColor? color, int? wheels, VehicleType? vehicleType)
         {
             // Implementation for searching a vehicle by property
 
@@ -123,7 +123,7 @@ namespace ConsoleApp
                     .Where(vehicle =>
                         (!color.HasValue || vehicle != null && vehicle.Color.Equals(color)) &&
                         (!wheels.HasValue || vehicle != null && vehicle.Wheels == wheels.Value) &&
-                        (string.IsNullOrEmpty(vehicleType) || vehicle != null && vehicle.GetType().Name.Equals(vehicleType, StringComparison.OrdinalIgnoreCase))
+                        (!vehicleType.HasValue || vehicle != null && vehicle.Type.Equals(vehicleType))
                     );
 
         }

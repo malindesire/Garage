@@ -107,24 +107,24 @@ namespace ConsoleApp
 
             var regNumber = _ui.AskForString("Enter vehicle registration number");
             VehicleColor color = _ui.AskForVehicleColor();
-            var vehicleType = _ui.AskForString("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
+            VehicleType vehicleType = _ui.AskForVehicleType();
             int propertyValue = 0;
 
             switch (vehicleType)             
             {
-                case "airplane":
+                case VehicleType.Airplane:
                     propertyValue = _ui.AskForInt("Enter airplane wingspan");
                     break;
-                case "boat":
+                case VehicleType.Boat:
                     propertyValue = _ui.AskForInt("Enter boat length");
                     break;
-                case "bus":
+                case VehicleType.Bus:
                     propertyValue = _ui.AskForInt("Enter number of seats");
                     break;
-                case "car":
+                case VehicleType.Car:
                     propertyValue = _ui.AskForInt("Enter number of doors");
                     break;
-                case "motorcycle":
+                case VehicleType.Motorcycle:
                     propertyValue = _ui.AskForInt("Enter cylinder volume");
                     break;
                 default:
@@ -192,8 +192,8 @@ namespace ConsoleApp
 
             _ui.ShowMessage("Search for vehicles by property");
             VehicleColor? color = _ui.AskForOptionalVehicleColor();
-            var wheels = _ui.AskForOptionalInt("Wheel Quantity");
-            var type = _ui.AskForString("Type of Vehicle");
+            var wheels = _ui.AskForOptionalInt("Wheel Quantity, press Enter to skip");
+            VehicleType? type = _ui.AskForOptionalVehicleType();
 
             var results = _garageHandler.SearchVehicles(color, wheels, type);
 
