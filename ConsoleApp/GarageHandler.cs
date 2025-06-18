@@ -5,33 +5,13 @@ namespace ConsoleApp
     internal class GarageHandler
     {
         private readonly Garage<Spot> _garage;
-        private readonly UI _ui;
+        public bool IsFull => _garage.All(spot => spot.IsOccupied);
+        public bool IsEmpty => _garage.All(spot => !spot.IsOccupied);
         public GarageHandler(int capacity)
         {
             _garage = new Garage<Spot>(capacity, i => new Spot(i));
-            _ui = new UI();
         }
 
-        public bool CheckFullGarage()
-        {
-            if (_garage.IsFull)
-            {
-                _ui.ShowMessage("The garage is full.");
-                return true;
-            }
-
-            return false; // Garage is not full
-        }
-        public bool CheckEmptyGarage()
-        {
-            if (_garage.IsEmpty)
-            {
-                _ui.ShowMessage("The garage is empty.");
-                return true;
-            }
-
-            return false; // Garage is not empty
-        }
         public IEnumerable<Vehicle?> GetParkedVehicles()
         {
             // Implementation for showing all parked vehicles

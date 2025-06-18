@@ -7,8 +7,6 @@ namespace ConsoleApp
         private readonly T[] _spots;
         public int Capacity { get; }
         public T[] Spots => _spots;
-        public bool IsFull => _spots.All(spot => spot.IsOccupied);
-        public bool IsEmpty => _spots.All(spot => !spot.IsOccupied);
 
         public Garage(int capacity, Func<int, T> spotFactory)
         {
