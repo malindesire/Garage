@@ -4,7 +4,7 @@
     {
         public int SeatQty { get; }
         public Bus(string regNumber, string color, int seatQty)
-            : base(regNumber, color, wheels: 8)
+            : base(VehicleType.Bus, regNumber, color, wheels: 8)
         {
             SeatQty = seatQty;
 

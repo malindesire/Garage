@@ -4,7 +4,7 @@
     {
         public int Length { get; }
         public Boat(string regNumber, string color, int length)
-            : base(regNumber, color, wheels: 0)
+            : base(VehicleType.Boat, regNumber, color, wheels: 0)
         {
             Length = length;
         }

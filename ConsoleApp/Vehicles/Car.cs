@@ -4,7 +4,7 @@
     {
         public int Doors { get; }
         public Car(string regNumber, string color, int doors)
-            : base(regNumber, color, wheels: 4)
+            : base(VehicleType.Car, regNumber, color, wheels: 4)
         {
             Doors = doors;
         }

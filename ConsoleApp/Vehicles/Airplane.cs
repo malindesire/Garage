@@ -4,7 +4,7 @@
     {
         public int Wingspan { get; }
         public Airplane(string regNumber, string color, int wingspan)
-            : base(regNumber, color, wheels: 6)
+            : base(VehicleType.Airplane, regNumber, color, wheels: 6)
         {
             Wingspan = wingspan;
         }
