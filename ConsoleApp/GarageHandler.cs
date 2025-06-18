@@ -43,19 +43,9 @@ namespace ConsoleApp
 
             return vehicleCounts; // Return a dictionary with vehicle types and their counts
         }
-        public bool Park(string regNumber, VehicleColor color, VehicleType vehicleType, int propertyValue )
+        public bool Park(Vehicle vehicle)
         {
             // Implementation for parking a vehicle
-
-            Vehicle vehicle = (vehicleType) switch             
-            {
-                VehicleType.Airplane => new Airplane(regNumber, color, propertyValue),
-                VehicleType.Boat => new Boat(regNumber, color, propertyValue),
-                VehicleType.Bus => new Bus(regNumber, color, propertyValue),
-                VehicleType.Car => new Car(regNumber, color, propertyValue),
-                VehicleType.Motorcycle => new Motorcycle(regNumber, color, propertyValue),
-                _ => throw new ArgumentException("Invalid vehicle type.")
-            };
 
             for (int i = 0; i < _garage.Capacity; i++)
             {

@@ -1,4 +1,5 @@
 ﻿using ConsoleApp.Vehicles;
+using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
@@ -73,6 +74,32 @@ namespace ConsoleApp
             return false;
         }
 
+        private Vehicle CreateVehicle()
+        {
+            var regNumber = _ui.AskForString("Enter vehicle registration number");
+            VehicleColor color = _ui.AskForVehicleColor();
+            VehicleType vehicleType = _ui.AskForVehicleType();
+
+            switch (vehicleType)
+            {
+                case VehicleType.Airplane:
+                    int wingspan = _ui.AskForInt("Enter airplane wingspan");
+                    return new Airplane(regNumber, color, wingspan);
+                case VehicleType.Boat:
+                    int length = _ui.AskForInt("Enter boat length");
+                    return new Boat(regNumber, color, length);
+                case VehicleType.Bus:
+                    int seats = _ui.AskForInt("Enter number of seats");
+                    return new Bus(regNumber, color, seats);
+                case VehicleType.Motorcycle:
+                    int cylinderVolume = _ui.AskForInt("Enter cylinder volume");
+                    return new Motorcycle(regNumber, color, cylinderVolume);
+                default:
+                    int doors = _ui.AskForInt("Enter number of doors");
+                    return new Car(regNumber, color, doors);
+            }
+        }
+
         private void ShowAllParkedVehicles()
         {
             if (IsGarageEmpty()) return; // Exit if the garage is empty
@@ -104,43 +131,19 @@ namespace ConsoleApp
         private void ParkVehicle()
         {
             if (IsGarageFull()) return; // Exit if the garage is full
+            Vehicle vehicle = CreateVehicle();
 
-            var regNumber = _ui.AskForString("Enter vehicle registration number");
-            VehicleColor color = _ui.AskForVehicleColor();
-            VehicleType vehicleType = _ui.AskForVehicleType();
-            int propertyValue = 0;
+            bool parked = _garageHandler.Park(vehicle);
 
-            switch (vehicleType)             
-            {
-                case VehicleType.Airplane:
-                    propertyValue = _ui.AskForInt("Enter airplane wingspan");
-                    break;
-                case VehicleType.Boat:
-                    propertyValue = _ui.AskForInt("Enter boat length");
-                    break;
-                case VehicleType.Bus:
-                    propertyValue = _ui.AskForInt("Enter number of seats");
-                    break;
-                case VehicleType.Car:
-                    propertyValue = _ui.AskForInt("Enter number of doors");
-                    break;
-                case VehicleType.Motorcycle:
-                    propertyValue = _ui.AskForInt("Enter cylinder volume");
-                    break;
-                default:
-                    _ui.ShowMessage("Invalid vehicle type entered.");
-                    return; // Exit if the vehicle type is invalid
-            }
-
-            bool parked = _garageHandler.Park(regNumber, color, vehicleType, propertyValue);
             if (parked)
             {
-                _ui.ShowMessage($"Vehicle of type {vehicleType} with registration number {regNumber} parked successfully.");
+                _ui.ShowMessage($"Vehicle of type {vehicle.Type} with registration number {vehicle.RegNumber} parked successfully.");
             }
             else
             {
                 _ui.ShowMessage("Garage is full, could not park the vehicle.");
             }
+
         }
 
         private void RemoveVehicle()
