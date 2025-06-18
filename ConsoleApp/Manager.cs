@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp
+﻿using ConsoleApp.Vehicles;
+
+namespace ConsoleApp
 {
     internal class Manager
     {
@@ -104,7 +106,7 @@
             if (IsGarageFull()) return; // Exit if the garage is full
 
             var regNumber = _ui.AskForString("Enter vehicle registration number");
-            var color = _ui.AskForString("Enter vehicle color");
+            VehicleColor color = _ui.AskForVehicleColor();
             var vehicleType = _ui.AskForString("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
             int propertyValue = 0;
 
@@ -188,10 +190,10 @@
         {
             if (IsGarageEmpty()) return; // Exit if the garage is empty
 
-            _ui.ShowMessage("Search for vehicles by property, press enter if you want to skip a property.");
-            string color = _ui.AskForString("Color");
-            int wheels = _ui.AskForInt("Wheel Quantity");
-            string type = _ui.AskForString("Type of Vehicle");
+            _ui.ShowMessage("Search for vehicles by property");
+            VehicleColor? color = _ui.AskForOptionalVehicleColor();
+            var wheels = _ui.AskForInt("Wheel Quantity. Press Enter to skip.");
+            var type = _ui.AskForString("Type of Vehicle");
 
             var results = _garageHandler.SearchVehicles(color, wheels, type);
 
@@ -203,7 +205,8 @@
             {
                 _ui.ShowMessage($"Found {results.Count()} vehicles matching the criteria:");
                 foreach (var v in results)
-                {
+                {   
+                    if (v == null) continue; // Skip null vehicles
                     _ui.ShowMessage($"{v.GetType().Name} with registration number {v.RegNumber}.");
                 }
             }
