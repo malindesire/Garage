@@ -83,25 +83,21 @@ namespace ConsoleApp
 
             return null; // Return null if no vehicle with the given registration number was found
         }
-        public void Populate(int count)
+        public void Populate(int amount)
         {
             // Implementation for populating the garage with vehicles
-            /* var airplane = new Airplane("ABC123", "white", 60);
-            var boat = new Boat("DEF123", "black", 55);
-            var bus = new Bus("GHI123", "green", 35);
-            var car = new Car("JKL123", "red", 2);
-            var motorcycle = new Motorcycle("MNO123", "yellow", 125);
+            for (int i = 0; i < amount; i++)
+            {
+                for (int index = 0; index < _garage.Capacity; index++)
+                {
+                    Vehicle vehicle = VehicleFactory.GenerateRandomVehicle();
 
-            _garage.Spots[0].Park(airplane);
-            _garage.Spots[7].Park(airplane);
-            _garage.Spots[8].Park(airplane);
-            _garage.Spots[1].Park(boat);
-            _garage.Spots[2].Park(bus);
-            _garage.Spots[3].Park(car);
-            _garage.Spots[9].Park(car);
-            _garage.Spots[4].Park(motorcycle);
-            _garage.Spots[5].Park(motorcycle);
-            _garage.Spots[6].Park(motorcycle); */
+                    if (_garage.Spots[index].IsOccupied) continue; // Skip if the spot is already occupied
+                    _garage.Spots[index].Park(vehicle); // Attempt to park the generated vehicle
+
+                }
+            }
+
         }
         public Vehicle? SearchVehicle(string regNumber)
         {
