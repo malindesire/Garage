@@ -51,8 +51,30 @@
             }
         }
 
+        private bool IsGarageFull()
+        {
+            if (_garageHandler.IsFull)
+            {
+                _ui.ShowMessage("The garage is full, cannot park any more vehicles.");
+                return true;
+            }
+            return false;
+        }
+
+        private bool IsGarageEmpty()
+        {
+            if (_garageHandler.IsEmpty)
+            {
+                _ui.ShowMessage("The garage is empty, no vehicles to show.");
+                return true;
+            }
+            return false;
+        }
+
         private void ShowAllParkedVehicles()
         {
+            if (IsGarageEmpty()) return; // Exit if the garage is empty
+
             _ui.ShowMessage("Vehicles parked in the garage:");
 
             var vehicles = _garageHandler.GetParkedVehicles();
@@ -67,6 +89,8 @@
 
         private void ShowVehicleTypesAndCounts()
         {
+            if (IsGarageEmpty()) return; // Exit if the garage is empty
+
             var vehicleCounts = _garageHandler.GetVehicleTypeCount();
 
             foreach (var kvp in vehicleCounts)
@@ -77,6 +101,8 @@
 
         private void ParkVehicle()
         {
+            if (IsGarageFull()) return; // Exit if the garage is full
+
             var regNumber = _ui.AskForString("Enter vehicle registration number");
             var color = _ui.AskForString("Enter vehicle color");
             var vehicleType = _ui.AskForString("Enter vehicle type (Airplane, Boat, Bus, Car, Motorcycle)").ToLower();
@@ -117,6 +143,8 @@
 
         private void RemoveVehicle()
         {
+            if (IsGarageEmpty()) return; // Exit if the garage is empty
+
             var regNumber = _ui.AskForString("Enter vehicle registration number to remove");
             var vehicle = _garageHandler.Remove(regNumber);
             if (vehicle == null)
@@ -132,6 +160,8 @@
 
         private void PopulateGarageWithVehicles(int quantity)
         {
+            if (IsGarageFull()) return; // Exit if the garage is full
+
             _garageHandler.Populate(quantity);
             _ui.ShowMessage($"Garage populated with {quantity} vehicles.");
 
@@ -139,6 +169,8 @@
 
         private void SearchVehicleByRegistrationNumber()
         {
+            if (IsGarageEmpty()) return; // Exit if the garage is empty
+
             _ui.ShowMessage("Search for a vehicle by registration number.");
             string regNumber = _ui.AskForString("Registration Number");
             var vehicle = _garageHandler.SearchVehicles(regNumber);
@@ -154,6 +186,8 @@
 
         private void SearchVehicleByProperty()
         {
+            if (IsGarageEmpty()) return; // Exit if the garage is empty
+
             _ui.ShowMessage("Search for vehicles by property, press enter if you want to skip a property.");
             string color = _ui.AskForString("Color");
             int wheels = _ui.AskForInt("Wheel Quantity");
