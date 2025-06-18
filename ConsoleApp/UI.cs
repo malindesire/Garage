@@ -124,5 +124,57 @@ namespace ConsoleApp
                 Console.WriteLine("That choice doesn't exist, try again!");
             }
         }
+
+        public VehicleType AskForVehicleType()
+        {
+            var values = Enum.GetValues(typeof(VehicleType)).Cast<VehicleType>().ToList();
+
+            Console.WriteLine("Choose a type:");
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {values[i]}");
+            }
+
+            while (true)
+            {
+                int choice = AskForInt($"Your choice (number)");
+
+                if (choice >= 1 && choice <= values.Count)
+                {
+                    return values[choice - 1];
+                }
+
+                Console.WriteLine("That choice doesn't exist, try again!");
+            }
+        }
+
+        public VehicleType? AskForOptionalVehicleType()
+        {
+            var values = Enum.GetValues(typeof(VehicleType)).Cast<VehicleType>().ToList();
+
+            Console.WriteLine("Choose a type:");
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {values[i]}");
+            }
+
+            while (true)
+            {
+                int choice = AskForInt($"Your choice (number), choose 0 to skip");
+
+                if (choice == 0) return null;
+
+                if (choice >= 1 && choice <= values.Count)
+                {
+                    return values[choice - 1];
+                }
+
+                Console.WriteLine("That choice doesn't exist, try again!");
+            }
+        }
     }
 }
+
+
