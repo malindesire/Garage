@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp
+﻿using ConsoleApp.Vehicles;
+
+namespace ConsoleApp
 {
     // This class handles the UI logic for the ConsoleApp project.
     internal class UI
@@ -16,6 +18,10 @@
             Console.WriteLine("0. Exit");
         }
 
+        public void ShowMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
         public string AskForString(string prompt)
         {
             Console.WriteLine($"{prompt}:");
@@ -43,9 +49,53 @@
             return result;
         }
 
-        public void ShowMessage(string message)
+        public VehicleColor AskForVehicleColor()
         {
-            Console.WriteLine(message);
+            var values = Enum.GetValues(typeof(VehicleColor)).Cast<VehicleColor>().ToList();
+
+            Console.WriteLine("Choose a color:");
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {values[i]}");
+            }
+
+            while (true)
+            {
+                int choice = AskForInt($"Your choice (number)");
+
+                if (choice >= 1 && choice <= values.Count)
+                {
+                    return values[choice - 1];
+                }
+
+                Console.WriteLine("That choice doesn't exist, try again!");
+            }
+        }
+        public VehicleColor? AskForOptionalVehicleColor()
+        {
+            var values = Enum.GetValues(typeof(VehicleColor)).Cast<VehicleColor>().ToList();
+
+            Console.WriteLine("Choose a color:");
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {values[i]}");
+            }
+
+            while (true)
+            {
+                int choice = AskForInt($"Your choice (number), choose 0 to skip");
+
+                if (choice == 0) return null;
+
+                if (choice >= 1 && choice <= values.Count)
+                {
+                    return values[choice - 1];
+                }
+
+                Console.WriteLine("That choice doesn't exist, try again!");
+            }
         }
     }
 }
