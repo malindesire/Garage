@@ -192,7 +192,7 @@ namespace ConsoleApp
 
             _ui.ShowMessage("Search for vehicles by property");
             VehicleColor? color = _ui.AskForOptionalVehicleColor();
-            var wheels = _ui.AskForInt("Wheel Quantity");
+            var wheels = _ui.AskForOptionalInt("Wheel Quantity");
             var type = _ui.AskForString("Type of Vehicle");
 
             var results = _garageHandler.SearchVehicles(color, wheels, type);

@@ -49,6 +49,33 @@ namespace ConsoleApp
             return result;
         }
 
+        public int? AskForOptionalInt(string prompt)
+        {
+            int result;
+            bool success = false;
+
+            do
+            {
+                Console.WriteLine($"{prompt}:");
+                string input = Console.ReadLine() ?? string.Empty;
+
+                if (input == string.Empty)
+                {
+                    return null;
+                }
+
+                success = int.TryParse(input, out result);
+
+                if (!success)
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid number.");
+                }
+
+            } while (!success);
+
+            return result;
+        }
+
         public VehicleColor AskForVehicleColor()
         {
             var values = Enum.GetValues(typeof(VehicleColor)).Cast<VehicleColor>().ToList();
