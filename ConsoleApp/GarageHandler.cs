@@ -2,7 +2,7 @@
 
 namespace ConsoleApp
 {
-    internal class GarageHandler
+    internal class GarageHandler : IGarageHandler
     {
         private readonly Garage<Spot> _garage;
         public bool IsFull => _garage.All(spot => spot.IsOccupied);
@@ -24,7 +24,7 @@ namespace ConsoleApp
         {
             // Implementation for showing vehicle types and counts
 
-            var vehicleCounts = new Dictionary<string, int>(); 
+            var vehicleCounts = new Dictionary<string, int>();
             foreach (var spot in _garage.Spots)
             {
                 if (spot.ParkedVehicle != null)

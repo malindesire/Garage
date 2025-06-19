@@ -1,12 +1,11 @@
 ﻿using ConsoleApp.Vehicles;
-using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
     internal class Manager
     {
         private readonly UI _ui;
-        private readonly GarageHandler _garageHandler = new GarageHandler(15); // Assuming a garage with 15 spots
+        private readonly IGarageHandler _garageHandler = new GarageHandler(15); // Assuming a garage with 15 spots
 
         public Manager()
         {

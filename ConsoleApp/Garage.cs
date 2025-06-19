@@ -2,7 +2,7 @@
 
 namespace ConsoleApp
 {
-    internal class Garage<T> : IEnumerable<T> where T : Spot
+    internal class Garage<T> : IEnumerable<T>, IGarage<T> where T : Spot
     {
         private readonly T[] _spots;
         public int Capacity { get; }
