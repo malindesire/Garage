@@ -1,10 +1,11 @@
-﻿using ConsoleApp.Vehicles;
+﻿using ConsoleApp.ConsoleUI;
+using ConsoleApp.Vehicles;
 
 namespace ConsoleApp
 {
     internal class Manager
     {
-        private readonly UI _ui;
+        private readonly IUI _ui;
         private readonly IGarageHandler _garageHandler = new GarageHandler(15); // Assuming a garage with 15 spots
 
         public Manager()

@@ -1,9 +1,9 @@
 ﻿using ConsoleApp.Vehicles;
 
-namespace ConsoleApp
+namespace ConsoleApp.ConsoleUI
 {
     // This class handles the UI logic for the ConsoleApp project.
-    internal class UI
+    internal class UI : IUI
     {
         public void ShowMainMenu()
         {
