@@ -1,4 +1,6 @@
 ﻿using ConsoleApp.Vehicles;
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("Tests")] // Allow unit tests to access internal members of this assembly
 
 namespace ConsoleApp
 {
